@@ -6,7 +6,7 @@ import player
 import tictactoe
 
 trainer = player.Dullard()
-champion = player.AIPlayer(read_save=True)
+champion = player.AI(read_save=True)
 
 game = tictactoe.Game(trainer, champion)
 

@@ -3,7 +3,7 @@
 import tictactoe
 import player
 
-game = tictactoe.Game(player.HumanPlayer(), player.AIPlayer(read_save=True))
+game = tictactoe.Game(player.Human(), player.AI(read_save=True))
 
 if __name__ == "__main__":
 	game.play()

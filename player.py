@@ -25,16 +25,16 @@ class Player(metaclass=abc.ABCMeta):
 	def on_lose(self, gs):
 		pass
 
-class HumanPlayer(Player):
+class Human(Player):
 
 	nhumans = 0
 
 	def __init__(self):
 		super().__init__()
-		HumanPlayer.nhumans += 1
+		Human.nhumans += 1
 
 	def get_mvpos(self, gs):
-		print("Human #%i:" % HumanPlayer.nhumans)
+		print("Human #%i:" % Human.nhumans)
 		print(gs.board)
 		avail = [str(o//3 + 1) + ',' + str((o%3) + 1) for o in gs.options]
 		while True:
@@ -46,7 +46,7 @@ class HumanPlayer(Player):
 	def on_win(self, gs):
 		self.wins += 1
 		print(gs.board)
-		print("Human #%i wins!" % HumanPlayer.nhumans)
+		print("Human #%i wins!" % Human.nhumans)
 
 	def on_draw(self, gs):
 		self.draws += 1
@@ -55,9 +55,9 @@ class HumanPlayer(Player):
 
 	def on_lose(self, gs):
 		print(gs.board)
-		print("Human #%i loses!" % HumanPlayer.nhumans)
+		print("Human #%i loses!" % Human.nhumans)
 
-class AIPlayer(Player):
+class AI(Player):
 
 	memnode = collections.namedtuple("STMemoryNode", ["board", "choice"])
 	save_file = "3tmind.dat"
@@ -67,7 +67,7 @@ class AIPlayer(Player):
 		self.ltmem = {}
 		self.stmem = []
 		if read_save:
-			with open(AIPlayer.save_file, 'r') as f:
+			with open(AI.save_file, 'r') as f:
 				while True:
 					byte = f.read(1)
 					if byte == "":
@@ -85,7 +85,7 @@ class AIPlayer(Player):
 		if gs.board not in self.ltmem:
 			self.ltmem[gs.board] = gs.options
 		mvpos = random.choice(self.ltmem[gs.board])
-		self.stmem.append(AIPlayer.memnode(gs.board, mvpos))
+		self.stmem.append(AI.memnode(gs.board, mvpos))
 		return mvpos
 
 	def on_win(self, gs):
@@ -111,7 +111,7 @@ class AIPlayer(Player):
 		self.stmem = []
 
 	def freeze(self):
-		with open(AIPlayer.save_file, 'w') as f:
+		with open(AI.save_file, 'w') as f:
 			for board, options in self.ltmem.items():
 				f.write(board + "".join([str(o) for o in options]) + ':')
 
