@@ -27,14 +27,10 @@ class Player(metaclass=abc.ABCMeta):
 
 class Human(Player):
 
-	nhumans = 0
-
 	def __init__(self):
 		super().__init__()
-		Human.nhumans += 1
 
 	def get_mvpos(self, gs):
-		print("Human #%i:" % Human.nhumans)
 		print(gs.board)
 		avail = [str(o//3 + 1) + ',' + str((o%3) + 1) for o in gs.options]
 		while True:
@@ -46,16 +42,16 @@ class Human(Player):
 	def on_win(self, gs):
 		self.wins += 1
 		print(gs.board)
-		print("Human #%i wins!" % Human.nhumans)
+		print("Victory")
 
 	def on_draw(self, gs):
 		self.draws += 1
 		print(gs.board)
-		print("It's a draw!")
+		print("Draw")
 
 	def on_lose(self, gs):
 		print(gs.board)
-		print("Human #%i loses!" % Human.nhumans)
+		print("Defeat")
 
 class AI(Player):
 
