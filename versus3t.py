@@ -1,4 +1,8 @@
 #!/usr/bin/env python3
+"""
+versus3t.py
+play a round against the current bot; it learns from these games as well
+"""
 
 import random
 

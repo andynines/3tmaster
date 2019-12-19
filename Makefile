@@ -1,3 +1,5 @@
+# Makefile
+# quickly create a new bot
 
 .PHONY: new-bot dumb-bot intermediate-bot master-bot clean cleanall
 

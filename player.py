@@ -1,16 +1,21 @@
+"""
+player.py
+object classes representing players to be plugged into ttt engine
+"""
 
 import abc
 import collections
 import random
 
 class Player(metaclass=abc.ABCMeta):
-
+	# all players must inherit from this class and implement its methods
+	@abc.abstractmethod
 	def __init__(self):
 		self.wins = 0
 		self.draws = 0
 
 	@abc.abstractmethod
-	def get_mvpos(self, gs):
+	def get_mvpos(self, gs): # all methods receive gamestate tuple with board config and available moves
 		pass
 
 	@abc.abstractmethod
@@ -26,7 +31,7 @@ class Player(metaclass=abc.ABCMeta):
 		pass
 
 class Human(Player):
-
+	# plug a human into a game for a terminal interface
 	def __init__(self):
 		super().__init__()
 
@@ -54,7 +59,7 @@ class Human(Player):
 		print("Defeat")
 
 class AI(Player):
-
+	# heuristic AI; learns from losses and writes knowledge structures to disk
 	memnode = collections.namedtuple("STMemoryNode", ["board", "choice"])
 	save_file = "3tmind.dat"
 
@@ -63,6 +68,7 @@ class AI(Player):
 		self.ltmem = {}
 		self.stmem = []
 		if read_save:
+			# read in a knowledge structure; see freeze method for format
 			with open(AI.save_file, 'r') as f:
 				while True:
 					byte = f.read(1)
@@ -89,14 +95,18 @@ class AI(Player):
 		self.stmem = []
 
 	def on_draw(self, gs):
+		# if the AI is okay with drawing, it will learn to never lose
+		# if made to not be okay with drawing, it will learn to win more, but occasionally lose
 		self.draws += 1
 		self.stmem = []
 
 	def on_lose(self, gs):
+		# never again make the move that lead to the loss
 		while True:
 			lastmem = self.stmem[-1]
 			self.ltmem[lastmem.board].remove(lastmem.choice)
 			if not self.ltmem[lastmem.board]:
+				# if a configuration has no good moves, prune the memory and "recurse" up the game tree
 				del self.ltmem[lastmem.board]
 				self.stmem = self.stmem[:-1]
 				if len(self.stmem) == 0:
@@ -107,12 +117,21 @@ class AI(Player):
 		self.stmem = []
 
 	def freeze(self):
+		"""
+		knowledge structure format
+		for as many board configurations as the AI is familiar with:
+		-nine characters either X, O, or - describing a particular board configuration
+		-an arbitrary number of single digit characters representing string indexes of possible moves
+		...
+		-a colon : represening the end of that memory
+		-EOF, or another memory
+		"""
 		with open(AI.save_file, 'w') as f:
 			for board, options in self.ltmem.items():
 				f.write(board + "".join([str(o) for o in options]) + ':')
 
 class Dullard(Player):
-
+	# plug into a game to face a player that makes random, uninformed moves; good training dummy
 	def __init__(self):
 		super().__init__()
 
