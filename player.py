@@ -101,7 +101,7 @@ class AI(Player):
 		self.stmem = []
 
 	def on_lose(self, gs):
-		# never again make the move that lead to the loss
+		# never again make the move that led to the loss
 		while True:
 			lastmem = self.stmem[-1]
 			self.ltmem[lastmem.board].remove(lastmem.choice)

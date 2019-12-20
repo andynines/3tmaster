@@ -1,5 +1,5 @@
 # 3tmaster
-An heuristic AI for playing tic-tac-toe
+Heuristic AI for playing tic-tac-toe
 ## Playing
 Use the makefile to create a new bot; its knowledge is preserved in the file `3tmind.dat`.
 ```bash
@@ -7,7 +7,7 @@ make dumb-bot
 make intermediate-bot
 make master-bot # may take a moment
 ```
-To play against the current bot, use the `versus3t.py` script. To train the bot for an additional `n` number of rounds, use `./train3t.py n`.
+To play against the current bot, use `./versus3t.py`. To train the bot for an additional `n` number of rounds, use `./train3t.py n`.
 
 To clean up, use `make cleanall`.
 ## Example
