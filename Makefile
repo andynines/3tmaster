@@ -1,7 +1,7 @@
 # Makefile
 # quickly create a new bot
 
-.PHONY: new-bot dumb-bot intermediate-bot master-bot clean cleanall
+.PHONY: dumb-bot intermediate-bot master-bot clean cleanall
 
 new-bot:
 	chmod +x train3t.py versus3t.py
